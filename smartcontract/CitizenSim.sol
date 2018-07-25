@@ -57,8 +57,8 @@ contract CitizenSim is ERC721Token {
         require(_citizenId < citizens.length);
         
         Citizen storage myCitizen = citizens[_citizenId];
-        require(((myCitizen.lastExecutionTime - now) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
-        myCitizen.stamina = myCitizen.stamina + (myCitizen.lastExecutionTime - now) / STAMINA_REGENRATION;
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
         require(myCitizen.stamina >= stamina_base_cost);
         
         // - stamina
@@ -80,6 +80,210 @@ contract CitizenSim is ERC721Token {
                 else if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
                 else if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
                 else if (myCitizen.agility > 0) { myCitizen.agility = myCitizen.agility - 1; }
+                else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+            }
+        }
+    }
+    
+    function BusinessDevelopment(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.perception < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.perception = myCitizen.perception + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+                else if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
+                else if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
+                else if (myCitizen.intelligence > 0) { myCitizen.intelligence = myCitizen.intelligence - 1; }
+                else if (myCitizen.agility > 0) { myCitizen.agility = myCitizen.agility - 1; }
+            }
+        }
+    }
+    
+    function Accounting(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.endurance < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.endurance = myCitizen.endurance + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
+                else if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.perception > 0) { myCitizen.perception = myCitizen.perception - 1; }
+                else if (myCitizen.intelligence > 0) { myCitizen.intelligence = myCitizen.intelligence - 1; }
+                else if (myCitizen.agility > 0) { myCitizen.agility = myCitizen.agility - 1; }
+                else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+            }
+        }
+    }
+    
+    function Marketing(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.charisma < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.charisma = myCitizen.charisma + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
+                else if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.perception > 0) { myCitizen.perception = myCitizen.perception - 1; }
+                else if (myCitizen.intelligence > 0) { myCitizen.intelligence = myCitizen.intelligence - 1; }
+                else if (myCitizen.agility > 0) { myCitizen.agility = myCitizen.agility - 1; }
+                else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+            }
+        }
+    }
+    
+    function IT(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.intelligence < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.intelligence = myCitizen.intelligence + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.perception > 0) { myCitizen.perception = myCitizen.perception - 1; }
+                else if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
+                else if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
+                else if (myCitizen.agility > 0) { myCitizen.agility = myCitizen.agility - 1; }
+                else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+            }
+        }
+    }
+    
+    function Security(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.agility < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.agility = myCitizen.agility + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.perception > 0) { myCitizen.perception = myCitizen.perception - 1; }
+                else if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
+                else if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
+                else if (myCitizen.intelligence > 0) { myCitizen.intelligence = myCitizen.intelligence - 1; }
+                else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
+            }
+        }
+    }
+    
+    function HR(uint _citizenId) onlyOwnerOf(_citizenId) public {
+        uint stamina_base_cost = 1;
+        
+        require(_citizenId < citizens.length);
+        
+        Citizen storage myCitizen = citizens[_citizenId];
+        require(((now - myCitizen.lastExecutionTime) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
+        myCitizen.stamina = myCitizen.stamina + ((now - myCitizen.lastExecutionTime) / STAMINA_REGENRATION);
+        require(myCitizen.stamina >= stamina_base_cost);
+        
+        // - stamina
+        myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
+        myCitizen.lastExecutionTime = uint64(now);
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // 5% of chance to increase stat in working
+        if (myCitizen.agility < 10 && random() <= 4 )
+        {
+            //true
+            myCitizen.agility = myCitizen.agility + 1;
+            if (totalStat(myCitizen) >= 40)
+            {
+                if (myCitizen.perception > 0) { myCitizen.perception = myCitizen.perception - 1; }
+                else if (myCitizen.strength > 0) { myCitizen.strength = myCitizen.strength - 1; }
+                else if (myCitizen.endurance > 0) { myCitizen.endurance = myCitizen.endurance - 1; }
+                else if (myCitizen.charisma > 0) { myCitizen.charisma = myCitizen.charisma - 1; }
+                else if (myCitizen.intelligence > 0) { myCitizen.intelligence = myCitizen.intelligence - 1; }
                 else if (myCitizen.luck > 0) { myCitizen.luck = myCitizen.luck - 1; }
             }
         }
