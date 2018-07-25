@@ -1,6 +1,6 @@
 module.exports = {
   app: {
-    id: 'YOUR-CLIENT-ID' //change this to your app's client id
+    id: '0dc7cf3a-b827-4c21-98dc-bc6e21ae6bc0' //change this to your app's client id
   },
   appWallet: {
     client: {

@@ -1,5 +1,5 @@
-var MyContract = artifacts.require("./MyContract.sol");
+var CitizenSim = artifacts.require("./CitizenSim.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(MyContract);
+  deployer.deploy(CitizenSim);
 };

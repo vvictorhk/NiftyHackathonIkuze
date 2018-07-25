@@ -312,7 +312,7 @@ contract CitizenSim is ERC721Token {
         return (seed - ((seed / 1000) * 1000));
     }
 
-        //battle
+    //battle
     function battle(uint _citizenId, uint _targetId) onlyOwnerOf(_citizenId) public {
         require(_citizenId < citizens.length);
         require(_targetId < citizens.length);

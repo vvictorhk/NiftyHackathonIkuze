@@ -3,10 +3,11 @@
 
 import { Bitski } from 'bitski';
 import Contract from './contract';
+import TokenService from '../services/TokenService.js';
 
 // Import any contracts you want to use from the build folder.
 // Here we've imported the sample contract.
-import artifacts from '../build/contracts/MyContract.json';
+import artifacts from '../build/contracts/CitizenSim.json';
 
 export default class App {
   /**
