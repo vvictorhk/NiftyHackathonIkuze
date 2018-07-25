@@ -41,14 +41,19 @@ contract CitizenSim is ERC721Token {
         owner = msg.sender;
     }
     
-    function createCitizen(string _name, address _to, uint _strength, uint _perception, uint _endurance, uint _charisma, uint _intelligence, uint _agility, uint _luck) public {
+    function createCitizen(string _name, address _to) public {
         //TODO: Charge 0.01 ETH per creation , by pulic
         //require(msg.sender == owner);
-        require(balanceOf(owner)<=1);
         uint id = citizens.length;
+        //uint[7] memory special;
+        //uint rand = 0;
         //Check sum of all stat <=30
-        require (_strength + _perception + _endurance + _charisma + _intelligence + _agility + _luck <= 30);
-        citizens.push(Citizen(_name, uint64(now), _endurance, _strength, _perception, _endurance, _charisma, _intelligence, _agility, _luck, uint64(now), 0,0));
+        //for (uint i=0; i<30; i++) {
+        //    rand = random()%6;
+        //    special[rand] = special[rand] + 1 ;
+        //}
+        //require (special[0] + special[1] + special[2] + special[3] + special[4] + special[5] + special[6] <= 30);
+        citizens.push(Citizen(_name, uint64(now), 4, 4, 4, 4, 4, 4, 4, 6, uint64(now), 0,0));
         _mint(_to,id);
     }
     function logistics(uint _citizenId) onlyOwnerOf(_citizenId) public {
