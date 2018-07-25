@@ -2,9 +2,9 @@ pragma solidity ^0.4.24;
 
 import "./ERC721Basic.sol";
 import "./ERC721Receiver.sol";
-import "../../math/SafeMath.sol";
-import "../../AddressUtils.sol";
-import "../../introspection/SupportsInterfaceWithLookup.sol";
+import "./SafeMath.sol";
+import "./AddressUtils.sol";
+import "./SupportsInterfaceWithLookup.sol";
 
 
 /**
@@ -12,6 +12,26 @@ import "../../introspection/SupportsInterfaceWithLookup.sol";
  * @dev see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
 contract ERC721BasicToken is SupportsInterfaceWithLookup, ERC721Basic {
+
+  bytes4 private constant InterfaceId_ERC721 = 0x80ac58cd;
+  /*
+   * 0x80ac58cd ===
+   *   bytes4(keccak256('balanceOf(address)')) ^
+   *   bytes4(keccak256('ownerOf(uint256)')) ^
+   *   bytes4(keccak256('approve(address,uint256)')) ^
+   *   bytes4(keccak256('getApproved(uint256)')) ^
+   *   bytes4(keccak256('setApprovalForAll(address,bool)')) ^
+   *   bytes4(keccak256('isApprovedForAll(address,address)')) ^
+   *   bytes4(keccak256('transferFrom(address,address,uint256)')) ^
+   *   bytes4(keccak256('safeTransferFrom(address,address,uint256)')) ^
+   *   bytes4(keccak256('safeTransferFrom(address,address,uint256,bytes)'))
+   */
+
+  bytes4 private constant InterfaceId_ERC721Exists = 0x4f558e79;
+  /*
+   * 0x4f558e79 ===
+   *   bytes4(keccak256('exists(uint256)'))
+   */
 
   using SafeMath for uint256;
   using AddressUtils for address;
@@ -31,6 +51,24 @@ contract ERC721BasicToken is SupportsInterfaceWithLookup, ERC721Basic {
 
   // Mapping from owner to operator approvals
   mapping (address => mapping (address => bool)) internal operatorApprovals;
+
+  /**
+   * @dev Guarantees msg.sender is owner of the given token
+   * @param _tokenId uint256 ID of the token to validate its ownership belongs to msg.sender
+   */
+  modifier onlyOwnerOf(uint256 _tokenId) {
+    require(ownerOf(_tokenId) == msg.sender);
+    _;
+  }
+
+  /**
+   * @dev Checks msg.sender can transfer a token, by being owner, approved, or operator
+   * @param _tokenId uint256 ID of the token to validate
+   */
+  modifier canTransfer(uint256 _tokenId) {
+    require(isApprovedOrOwner(msg.sender, _tokenId));
+    _;
+  }
 
   constructor()
     public
@@ -140,8 +178,8 @@ contract ERC721BasicToken is SupportsInterfaceWithLookup, ERC721Basic {
     uint256 _tokenId
   )
     public
+    canTransfer(_tokenId)
   {
-    require(isApprovedOrOwner(msg.sender, _tokenId));
     require(_from != address(0));
     require(_to != address(0));
 
@@ -170,6 +208,7 @@ contract ERC721BasicToken is SupportsInterfaceWithLookup, ERC721Basic {
     uint256 _tokenId
   )
     public
+    canTransfer(_tokenId)
   {
     // solium-disable-next-line arg-overflow
     safeTransferFrom(_from, _to, _tokenId, "");
@@ -194,6 +233,7 @@ contract ERC721BasicToken is SupportsInterfaceWithLookup, ERC721Basic {
     bytes _data
   )
     public
+    canTransfer(_tokenId)
   {
     transferFrom(_from, _to, _tokenId);
     // solium-disable-next-line arg-overflow
