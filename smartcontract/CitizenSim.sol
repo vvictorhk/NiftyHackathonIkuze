@@ -15,20 +15,17 @@ contract CitizenSim is ERC721Token {
         uint agility;
         uint luck;
         uint64 lastExecutionTime;
-        uint64 experience;
         uint totalTask;
-        uint256 money;
+        uint256 resources;
     }
     
     
-    //Make Referral Line need to pay
+    //TODO: Make Referral Line
     //get % creation fee
     //extra money
     
     //Battle Mechanism
-    //SPECIAL improve
-    //New Actions
-    //Random Encounter
+    //TODO: Random Encounter
     
     
     Citizen[] public citizens;
@@ -54,31 +51,29 @@ contract CitizenSim is ERC721Token {
     function battle(uint _citizenId, uint _targetId) onlyOwnerOf(_citizenId) public {
         require(_citizenId < citizens.length);
         require(_targetId < citizens.length);
-        Citizen storage myCitizen = citizen[_citizenId];
-        Citizen storage targetCitizen = citizen[_targetId];
+        Citizen storage myCitizen = citizens[_citizenId];
+        Citizen storage targetCitizen = citizens[_targetId];
         
     }
     
-    function Hackathon(uint _citizenId) onlyOwnerOf(_citizenId) public {
+    function Logistics(uint _citizenId) onlyOwnerOf(_citizenId) public {
         uint stamina_base_cost = 1;
-        uint exp_prerequisite = 0;
-        uint base_exp = 1;
         
         require(_citizenId < citizens.length);
         
-        Citizen storage myCitizen = citizen[_citizenId];
+        Citizen storage myCitizen = citizens[_citizenId];
         require(((myCitizen.lastExecutionTime - now) > STAMINA_REGENRATION) || myCitizen.stamina > 0);
         myCitizen.stamina = myCitizen.stamina + (myCitizen.lastExecutionTime - now) / STAMINA_REGENRATION;
-        
         require(myCitizen.stamina >= stamina_base_cost);
-        require(myCitizen.experience >= exp_prerequisite);
         
-        myCitizen.experience = myCitizen.experience + base_exp;
+        // - stamina
         myCitizen.stamina = myCitizen.stamina - stamina_base_cost;
         myCitizen.lastExecutionTime = uint64(now);
-        myCitizen.totalTask ++;
+        
+        // Add resources
+        myCitizen.resources = myCitizen.resources + 1000;
+        
+        // Random add stat
+        
     }
-    
-    function action
-    
 }
