@@ -108,18 +108,26 @@ contract CitizenSim is ERC721Token {
         return (seed - ((seed / 1000) * 1000));
     }
 
-    //battle
-    function battle(uint _citizenId, uint _targetId, uint _mode) onlyOwnerOf(_citizenId) public {
+        //battle
+    function battle(uint _citizenId, uint _targetId) onlyOwnerOf(_citizenId) public {
         require(_citizenId < citizens.length);
         require(_targetId < citizens.length);
         Citizen storage myCitizen = citizens[_citizenId];
         Citizen storage targetCitizen = citizens[_targetId];
-        uint myBattlePower = myCitizen.strength + myCitizen.perception + myCitizen.endurance + myCitizen.charisma + myCitizen.intelligence + myCitizen.agility + myCitizen.luck;
-        uint targetBattlePower = targetCitizen.strength + targetCitizen.perception + targetCitizen.endurance + targetCitizen.charisma + targetCitizen.intelligence + targetCitizen.agility + targetCitizen.luck;
+        require(myCitizen.resources >= 500);
+        require(targetCitizen.resources >= 500);
+        uint myBattlePower = _BattleScoreCal(myCitizen.strength , myCitizen.perception , myCitizen.endurance , myCitizen.charisma , myCitizen.intelligence , myCitizen.agility , myCitizen.luck,uint(blockhash(block.number-1))%3 + 1);
+        uint targetBattlePower = _BattleScoreCal(targetCitizen.strength, targetCitizen.perception , targetCitizen.endurance , targetCitizen.charisma , targetCitizen.intelligence , targetCitizen.agility , targetCitizen.luck,uint(blockhash(block.number-1))%3 + 1);
         
+        if(myBattlePower>=targetBattlePower){
+            myCitizen.resources = myCitizen.resources + 500; 
+            targetCitizen.resources = targetCitizen.resources -500;
+        }else{
+            targetCitizen.resources = targetCitizen.resources +500 ;
+            myCitizen.resources = myCitizen.resources-500;
+        }
         myCitizen.lastExecutionTime = uint64(now);
     }
-    
     function _BattleScoreCal(uint _s, uint _p, uint _e, uint _c, uint _i, uint _a, uint _l, uint _mode)public 
 
         returns (uint answer){
@@ -133,17 +141,18 @@ contract CitizenSim is ERC721Token {
         return answer;
     }
     
-    function luckmodifier(uint rawScore , uint _l ) public  
-        returns(uint answer){
-            uint random_number = uint(block.blockhash(block.number-1))%10 + 1;
-             answer = rawScore;
-            if (_l < random_number){
-                answer = rawScore * 125;
-            }else if(_l > random_number){
-                answer = rawScore * 75;
-            }else{
-                answer = rawScore;
-            }
+    
+    function luckmodifier(uint rawScore , uint _l )public returns(uint answer)
+    {
+        uint random_number = uint(blockhash(block.number-1))%10 + 1;
+         answer = rawScore;
+        if (_l < random_number){
+            answer = rawScore * 125;
+        }else if(_l > random_number){
+            answer = rawScore * 75;
+        }else{
+            answer = rawScore;
         }
+    }
     
 }
