@@ -41,16 +41,21 @@ contract CitizenSim is ERC721Token {
         owner = msg.sender;
     }
     
-    function createCitizen(string _name, address _to, uint _strength, uint _perception, uint _endurance, uint _charisma, uint _intelligence, uint _agility, uint _luck) public {
+    function createCitizen(string _name, address _to) public {
         //TODO: Charge 0.01 ETH per creation , by pulic
         //require(msg.sender == owner);
         uint id = citizens.length;
+        //uint[7] memory special;
+        //uint rand = 0;
         //Check sum of all stat <=30
-        require (_strength + _perception + _endurance + _charisma + _intelligence + _agility + _luck <= 30);
-        citizens.push(Citizen(_name, uint64(now), _endurance, _strength, _perception, _endurance, _charisma, _intelligence, _agility, _luck, uint64(now), 0,0));
+        //for (uint i=0; i<30; i++) {
+        //    rand = random()%6;
+        //    special[rand] = special[rand] + 1 ;
+        //}
+        //require (special[0] + special[1] + special[2] + special[3] + special[4] + special[5] + special[6] <= 30);
+        citizens.push(Citizen(_name, uint64(now), 4, 4, 4, 4, 4, 4, 4, 6, uint64(now), 0,0));
         _mint(_to,id);
     }
-    
     function logistics(uint _citizenId) onlyOwnerOf(_citizenId) public {
         uint stamina_base_cost = 1;
         
@@ -312,10 +317,11 @@ contract CitizenSim is ERC721Token {
         return (seed - ((seed / 1000) * 1000));
     }
 
-    //battle
+        //battle
     function battle(uint _citizenId, uint _targetId) onlyOwnerOf(_citizenId) public {
         require(_citizenId < citizens.length);
         require(_targetId < citizens.length);
+        require(_citizenId != _targetId);
         Citizen storage myCitizen = citizens[_citizenId];
         Citizen storage targetCitizen = citizens[_targetId];
         require(myCitizen.resources >= 500);
@@ -332,7 +338,7 @@ contract CitizenSim is ERC721Token {
         }
         myCitizen.lastExecutionTime = uint64(now);
     }
-    function _BattleScoreCal(uint _s, uint _p, uint _e, uint _c, uint _i, uint _a, uint _l, uint _mode)public 
+    function _BattleScoreCal(uint _s, uint _p, uint _e, uint _c, uint _i, uint _a, uint _l, uint _mode)private
 
         returns (uint answer){
         if (_mode == 1){
@@ -346,7 +352,7 @@ contract CitizenSim is ERC721Token {
     }
     
     
-    function luckmodifier(uint rawScore , uint _l )public returns(uint answer)
+    function luckmodifier(uint rawScore , uint _l )private returns(uint answer)
     {
         uint random_number = uint(blockhash(block.number-1))%10 + 1;
          answer = rawScore;

@@ -21,12 +21,44 @@
       <div id='signed-out' style='display:none'>
         <p>Please sign in to continue.</p>
         <div id='connect-button'></div>
+        <div id='metamask-container' style='margin-top: 20px'>
+          <button id='metamask-button'>Use Existing Web3 Provider</button>
+        </div>
       </div>
       <!-- Signed In Container -->
-      <div id='signed-in' style='display:none'>
+      <div id='signed-in' style='display:none'>        
         <p>Your wallet address is: <span id="wallet-address" class="text-monospace">Loading...</span></p>
         <p><button id='log-out' class='btn btn-sm btn-secondary'>Log Out</button></p>
       </div>
+      <!-- Query Character -->
+      <div id='query-citizen-area' style='display:none;'>
+        <p>
+          <input type="text" id="citizen-id">
+          <button id='query-citizen-button' class='btn btn-sm btn-secondary'>Query Citizen by ID</button>
+        </p>
+      </div>
+      <!-- Create Character -->
+      <div id='create-character-area' style='display:none'>
+        <p><button id='create-character-button' class='btn btn-sm btn-secondary'>Create Character</button></p>
+      </div>
+      <!-- Character Detail -->
+      <div id='character-detail-area' style='display:none'>
+        <p>Your current citizen ID is <span id="current-citizen-id"></span></p>
+        <p>Character Details: <span id="character-detail-field" class="text-monospace"></span></p>
+        <!-- Character Actions-->
+        <div id='character-actions-area' style='display:none'>
+          <button id='logistics' class='btn btn-sm btn-secondary'>Logistics</button>
+          <button id='businessDevelopment' class='btn btn-sm btn-secondary'>Business Development</button>
+          <button id='marketing' class='btn btn-sm btn-secondary'>Marketing</button>
+          <button id='it' class='btn btn-sm btn-secondary'>IT</button>
+          <button id='security' class='btn btn-sm btn-secondary'>Security</button>
+          <button id='hr' class='btn btn-sm btn-secondary'>Human Resources</button>
+        </div>
+        <!-- Character Actions Enemy Area -->
+        <div id='character-actions-enemy-area' style='display:none'>
+          <button id='battle' class='btn btn-sm btn-secondary'>Battle</button>
+        </div>
+      <div>
     </div>
   </body>
 </html>
